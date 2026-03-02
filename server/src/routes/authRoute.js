@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  refreshTokenController,
   signInController,
   signOutController,
   signUpController,
@@ -15,5 +16,8 @@ router.post("/signin", signInController);
 
 // signOut
 router.post("/signout", signOutController);
+
+// refreshToken
+router.post("/refresh", refreshTokenController);
 
 export default router;

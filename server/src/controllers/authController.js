@@ -126,3 +126,33 @@ export const signOutController = async (req, res) => {
     return res.status(500).json({ message: "Lỗi server" });
   }
 };
+
+export const refreshTokenController = async (req, res) => {
+  try {
+    const token = req.cookies?.refreshToken; // lấy token từ cookie
+    if (!token) {
+      return res.status(401).json({ message: "Không tìm thấy refreshToken" });
+    }
+
+    // tim refreshToken trong database
+    const session = await Session.find({ refreshToken: token });
+    if (!session) {
+      return res
+        .status(401)
+        .json({ message: "refreshToken không hợp lệ hoặc hết hạn" });
+    }
+
+    // tạo accessToken mới
+    const accessToken = jwt.sign(
+      { userId: session.userId },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "1d" },
+    );
+
+    // tra về accessToken mới cho client
+    return res.status(200).json({ accessToken });
+  } catch (error) {
+    console.error("Lỗi khi gọi hàm refreshTokenController:", error);
+    return res.status(500).json({ message: "Lỗi server" });
+  }
+};
