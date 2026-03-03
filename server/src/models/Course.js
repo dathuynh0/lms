@@ -31,7 +31,7 @@ const courseSchema = new mongoose.Schema(
     },
     isPublic: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     members: [
       {

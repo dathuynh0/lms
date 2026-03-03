@@ -1,23 +1,23 @@
 import express from "express";
 import {
-  refreshTokenController,
-  signInController,
-  signOutController,
-  signUpController,
+  refreshToken,
+  signIn,
+  signOut,
+  signUp,
 } from "../controllers/authController.js";
 
 const router = express.Router();
 
 // signUp
-router.post("/signup", signUpController);
+router.post("/signup", signUp);
 
 // signIn
-router.post("/signin", signInController);
+router.post("/signin", signIn);
 
 // signOut
-router.post("/signout", signOutController);
+router.post("/signout", signOut);
 
 // refreshToken
-router.post("/refresh", refreshTokenController);
+router.post("/refresh", refreshToken);
 
 export default router;

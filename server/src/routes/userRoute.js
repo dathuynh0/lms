@@ -1,8 +1,8 @@
 import express from "express";
-import { fetchMeController } from "../controllers/userController.js";
+import { fetchMe } from "../controllers/userController.js";
 
 const router = express.Router();
 
-router.get("/", fetchMeController);
+router.get("/", fetchMe);
 
 export default router;

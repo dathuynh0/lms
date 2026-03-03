@@ -6,7 +6,7 @@ import crypto from "crypto";
 
 const REFRESH_TOKEN_TTL = 14 * 24 * 60 * 60 * 100; // 14 ngày tính theo mls
 
-export const signUpController = async (req, res) => {
+export const signUp = async (req, res) => {
   try {
     // lay cac truong tu request body
     const { username, email, password, displayName, phone } = req.body;
@@ -41,12 +41,12 @@ export const signUpController = async (req, res) => {
 
     return res.sendStatus(204);
   } catch (error) {
-    console.error("Lỗi khi gọi hàm signUpController:", error);
+    console.error("Lỗi khi gọi hàm signUp:", error);
     return res.status(500).json({ message: "Lỗi server" });
   }
 };
 
-export const signInController = async (req, res) => {
+export const signIn = async (req, res) => {
   try {
     // lay cac truong tu request body
     const { username, password } = req.body;
@@ -104,12 +104,12 @@ export const signInController = async (req, res) => {
       accessToken,
     });
   } catch (error) {
-    console.error("Lỗi khi gọi hàm signInController:", error);
+    console.error("Lỗi khi gọi hàm signIn:", error);
     return res.status(500).json({ message: "Lỗi server" });
   }
 };
 
-export const signOutController = async (req, res) => {
+export const signOut = async (req, res) => {
   try {
     const token = req.cookies?.refreshToken; // lấy token từ cookie
     if (token) {
@@ -122,12 +122,12 @@ export const signOutController = async (req, res) => {
 
     return res.sendStatus(204);
   } catch (error) {
-    console.error("Lỗi khi gọi hàm signOutController:", error);
+    console.error("Lỗi khi gọi hàm signOut:", error);
     return res.status(500).json({ message: "Lỗi server" });
   }
 };
 
-export const refreshTokenController = async (req, res) => {
+export const refreshToken = async (req, res) => {
   try {
     const token = req.cookies?.refreshToken; // lấy token từ cookie
     if (!token) {
@@ -152,7 +152,7 @@ export const refreshTokenController = async (req, res) => {
     // tra về accessToken mới cho client
     return res.status(200).json({ accessToken });
   } catch (error) {
-    console.error("Lỗi khi gọi hàm refreshTokenController:", error);
+    console.error("Lỗi khi gọi hàm refreshToken:", error);
     return res.status(500).json({ message: "Lỗi server" });
   }
 };
