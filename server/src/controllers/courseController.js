@@ -2,11 +2,26 @@ import Course from "../models/Course.js";
 
 export const getAllCourses = async (req, res) => {
   try {
-    const courses = await Course.find().sort({ createdAt: -1 }); // Sắp xếp theo ngày tạo giảm dần
+    const courses = await Course.find()
+      .populate("createdBy", "displayName")
+      .sort({ createdAt: -1 }); // Sắp xếp theo ngày tạo giảm dần
 
     return res.status(200).json(courses);
   } catch (error) {
     console.error("Lỗi khi gọi hàm getAllCourses:", error);
+    return res.status(500).json({ message: "Lỗi server" });
+  }
+};
+
+// get allCourses createdBy
+export const getAllCoursesCreatedBy = async (req, res) => {
+  try {
+    // lay tat ca khoa hoc duoc tao boi user co id la req.user._id
+    const courses = await Course.find({ createdBy: req.user._id });
+
+    return res.status(200).json(courses);
+  } catch (error) {
+    console.error("Lỗi khi gọi hàm getAllCoursesCreatedBy:", error);
     return res.status(500).json({ message: "Lỗi server" });
   }
 };
@@ -97,15 +112,6 @@ export const deleteMember = async (req, res) => {
     const course = await Course.findById(req.params.id);
     if (!course) {
       return res.status(404).json({ message: "Không tìm thấy khóa học" });
-    }
-    // kiem tra quyen cua user
-    if (
-      req.user._id.toString() !== course.createdBy.toString() &&
-      req.user.role !== "ADMIN"
-    ) {
-      return res.status(403).json({
-        message: "Bạn không có quyền xóa thành viên khỏi khóa học này",
-      });
     }
 
     // xóa user khỏi danh sách thành viên của khóa học

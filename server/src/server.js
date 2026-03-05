@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import authRoute from "./routes/authRoute.js";
 import userRoute from "./routes/userRoute.js";
 import courseRoute from "./routes/courseRoute.js";
+import assignmentRoute from "./routes/assignmentRoute.js";
 import { protectedRoute } from "./middlewares/authMiddleware.js";
 
 dotenv.config();
@@ -24,6 +25,7 @@ app.use("/api/auth", authRoute);
 app.use(protectedRoute);
 app.use("/api/users", userRoute);
 app.use("/api/courses", courseRoute);
+app.use("/api/assignments", assignmentRoute);
 
 // kết nối đến DB trước khi khởi động server
 connectDB().then(() => {
