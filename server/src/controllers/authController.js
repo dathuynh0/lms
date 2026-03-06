@@ -137,16 +137,20 @@ export const refreshToken = async (req, res) => {
     // tim refreshToken trong database
     const session = await Session.find({ refreshToken: token });
     if (!session) {
-      return res
-        .status(401)
-        .json({ message: "refreshToken không hợp lệ hoặc hết hạn" });
+      return res.status(401).json({ message: "refreshToken không hợp lệ" });
+    }
+
+    if (session.expiresAt < new Date()) {
+      return res.status(401).json({ message: "refreshToken đã hết hạn" });
     }
 
     // tạo accessToken mới
     const accessToken = jwt.sign(
       { userId: session.userId },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "1d" },
+      {
+        expiresIn: "1d",
+      },
     );
 
     // tra về accessToken mới cho client
